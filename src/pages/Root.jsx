@@ -9,24 +9,35 @@ import Drawer from "MUI-Component/Drawer";
 import { Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { purple } from "@mui/material/colors";
+import { purple,teal } from "@mui/material/colors";
 import { useState } from "react";
 import { createTheme } from "@mui/material";
 
 const drawerWidth = 240;
 const Root = () => {
-    const [Mymode, setMymode] = useState("light");
+    const [mode, setMymode] = useState(
+      localStorage.getItem("currentmode") === null
+        ? "light"
+        : localStorage.getItem("currentmode") === "light" ? "light" : "dark"
+    );
     const darkTheme = createTheme({
       palette: {
         // @ts-ignore
-        mode: Mymode,
-        // @ts-ignore
-        abood: {
-          main: purple[500],
-          second: "#42a5f5",
-        },
+        mode,
+        ...(mode === "light"
+          ? { abood: { main: purple[500], second: "#42a5f5" } }
+          : {
+              abood: {
+                main: teal,
+                second: "purple",
+              },
+            }),
       },
     });
+        //     abood: {
+        //   main: purple[500],
+        //   second: "#42a5f5",
+        // },
   return (
     <ThemeProvider theme={darkTheme}>
       {/* <Typography mt={10} variant="h4" component={"p"} color="initial">ABOOD</Typography>

@@ -11,7 +11,7 @@ import {
   useTheme,
   IconButton,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
 import SettingsApplicationsSharpIcon from "@mui/icons-material/SettingsApplicationsSharp";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
@@ -20,6 +20,7 @@ import BedtimeSharpIcon from '@mui/icons-material/BedtimeSharp';
 const Drawerr = ({ drawerWidth, setMymode }) => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const currentLocation = useLocation();
 
   return (
     <Drawer
@@ -35,9 +36,13 @@ const Drawerr = ({ drawerWidth, setMymode }) => {
       anchor="left"
     >
       <List>
-        <ListItem sx={{display:"flex",justifyContent:'center'}}>
+        <ListItem sx={{ display: "flex", justifyContent: "center" }}>
           <IconButton
             onClick={() => {
+              localStorage.setItem(
+                "currentmode",
+                theme.palette.mode === "light" ? "dark" : "light"
+              );
               setMymode(theme.palette.mode === "light" ? "dark" : "light");
             }}
             variant="contained"
@@ -52,7 +57,15 @@ const Drawerr = ({ drawerWidth, setMymode }) => {
         </ListItem>
 
         <Divider />
-        <ListItem disablePadding>
+        <ListItem
+          sx={{
+            bgcolor:
+              currentLocation.pathname === "/"
+                ? theme.palette.abood.second
+                : null,
+          }}
+          disablePadding
+        >
           <ListItemButton
             onClick={() => {
               navigate("/");
@@ -64,7 +77,15 @@ const Drawerr = ({ drawerWidth, setMymode }) => {
             <ListItemText primary="Home" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem
+          sx={{
+            bgcolor:
+              currentLocation.pathname === "/create"
+                ? theme.palette.abood.second
+                : null,
+          }}
+          disablePadding
+        >
           <ListItemButton
             onClick={() => {
               navigate("/create");
@@ -76,7 +97,15 @@ const Drawerr = ({ drawerWidth, setMymode }) => {
             <ListItemText primary="Create" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem
+          sx={{
+            bgcolor:
+              currentLocation.pathname === "/profile"
+                ? theme.palette.abood.second
+                : null,
+          }}
+          disablePadding
+        >
           <ListItemButton
             onClick={() => {
               navigate("/profile");
@@ -88,7 +117,15 @@ const Drawerr = ({ drawerWidth, setMymode }) => {
             <ListItemText primary="Profile" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem
+          sx={{
+            bgcolor:
+              currentLocation.pathname === "/setting"
+                ? theme.palette.abood.second
+                : null,
+          }}
+          disablePadding
+        >
           <ListItemButton
             onClick={() => {
               navigate("/setting");
@@ -100,7 +137,15 @@ const Drawerr = ({ drawerWidth, setMymode }) => {
             <ListItemText primary="Setting" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem
+          sx={{
+            bgcolor:
+              currentLocation.pathname === "/logout"
+                ? theme.palette.abood.second
+                : null,
+          }}
+          disablePadding
+        >
           <ListItemButton
             onClick={() => {
               navigate("/logout");
