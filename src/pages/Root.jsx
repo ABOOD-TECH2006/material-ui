@@ -38,6 +38,17 @@ const Root = () => {
         //   main: purple[500],
         //   second: "#42a5f5",
         // },
+        const [noneOrblock,setnoneOrblock] = useState("none")
+        const [DrawerType, setDrawerType] = useState("permanent");
+        const ShowDrawer = ()=>{
+                setDrawerType("temporary ");
+                setnoneOrblock("block");
+        }
+              const HideDrawer = ()=>{
+                        setDrawerType("permanent ");
+                
+                        setnoneOrblock("none");
+              }
   return (
     <ThemeProvider theme={darkTheme}>
       {/* <Typography mt={10} variant="h4" component={"p"} color="initial">ABOOD</Typography>
@@ -47,14 +58,26 @@ const Root = () => {
             <IconButton size="small" color="error">
               <MenuSharpIcon fontSize="small"/>
             </IconButton> */}
-      <Appbar drawerWidth={drawerWidth} />
-      <Drawer drawerWidth={drawerWidth} setMymode={setMymode} />
+      <Appbar
+        {...{ ShowDrawer, drawerWidth }}
+        ShowDrawer={ShowDrawer}
+        drawerWidth={drawerWidth}
+      />
+      <Drawer
+        {...{ HideDrawer, DrawerType, noneOrblock, drawerWidth, setMymode }}
+        // HideDrawer={HideDrawer}
+        // DrawerType={DrawerType}
+        // noneOrblock={noneOrblock}
+        // drawerWidth={drawerWidth}
+        // setMymode={setMymode}
+      />
       <Box
         component="main"
         sx={{
-          ml: `${drawerWidth}px`,
+          ml: { xs: 0, sm: `${drawerWidth}px` },
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Outlet />

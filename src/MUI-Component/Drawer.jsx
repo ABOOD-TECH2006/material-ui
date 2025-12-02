@@ -10,6 +10,7 @@ import {
   Drawer, 
   useTheme,
   IconButton,
+  Box,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
@@ -17,148 +18,113 @@ import SettingsApplicationsSharpIcon from "@mui/icons-material/SettingsApplicati
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import WbSunnySharpIcon from '@mui/icons-material/WbSunnySharp';
 import BedtimeSharpIcon from '@mui/icons-material/BedtimeSharp';
-const Drawerr = ({ drawerWidth, setMymode }) => {
+const Drawerr = ({
+  drawerWidth,
+  setMymode,
+  noneOrblock,
+  DrawerType,
+  HideDrawer,
+}) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const currentLocation = useLocation();
-
+ const MyList = [
+   { text: "Home", icon: <Home />, path: "/" },
+   { text: "Create", icon: <Create />, path: "/Create" },
+   { text: "Profile", icon: <AccountCircleSharpIcon />, path: "/Profile" },
+   {
+     text: "Setting",
+     icon: <SettingsApplicationsSharpIcon />,
+     path: "/Setting",
+   },
+ ];
   return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
+    <Box component="nav">
+      <Drawer
+        sx={{
           width: drawerWidth,
-          boxSizing: "border-box",
-        },
-      }}
-      variant="permanent"
-      anchor="left"
-    >
-      <List>
-        <ListItem sx={{ display: "flex", justifyContent: "center" }}>
-          <IconButton
-            onClick={() => {
-              localStorage.setItem(
-                "currentmode",
-                theme.palette.mode === "light" ? "dark" : "light"
-              );
-              setMymode(theme.palette.mode === "light" ? "dark" : "light");
-            }}
-            variant="contained"
-            color="warning"
-          >
-            {theme.palette.mode === "light" ? (
-              <WbSunnySharpIcon />
-            ) : (
-              <BedtimeSharpIcon sx={{ color: "white" }} />
-            )}
-          </IconButton>
-        </ListItem>
+          display: { xs: noneOrblock, sm: "block" },
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant={DrawerType}
+        anchor="left"
+        open={true}
+        onClose={() => {
+          HideDrawer();
+        }}
+      >
+        <List>
+          <ListItem sx={{ display: "flex", justifyContent: "center" }}>
+            <IconButton
+              onClick={() => {
+                localStorage.setItem(
+                  "currentmode",
+                  theme.palette.mode === "light" ? "dark" : "light"
+                );
+                setMymode(theme.palette.mode === "light" ? "dark" : "light");
+              }}
+              variant="contained"
+              color="warning"
+            >
+              {theme.palette.mode === "light" ? (
+                <WbSunnySharpIcon />
+              ) : (
+                <BedtimeSharpIcon sx={{ color: "white" }} />
+              )}
+            </IconButton>
+          </ListItem>
 
-        <Divider />
-        <ListItem
-          sx={{
-            bgcolor:
-              currentLocation.pathname === "/"
-                ? theme.palette.abood.second
-                : null,
-          }}
-          disablePadding
-        >
-          <ListItemButton
-            onClick={() => {
-              navigate("/");
+          <Divider />
+          {MyList.map((item, i) => {
+            return (
+              <ListItem
+                key={i}
+                sx={{
+                  bgcolor:
+                    currentLocation.pathname === item.path
+                      ? theme.palette.abood.second
+                      : null,
+                }}
+                disablePadding
+              >
+                <ListItemButton
+                  onClick={() => {
+                    navigate(item.path);
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+          <ListItem
+            sx={{
+              bgcolor:
+                currentLocation.pathname === "/logout"
+                  ? theme.palette.abood.second
+                  : null,
             }}
+            disablePadding
           >
-            <ListItemIcon>
-              <Home />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          sx={{
-            bgcolor:
-              currentLocation.pathname === "/create"
-                ? theme.palette.abood.second
-                : null,
-          }}
-          disablePadding
-        >
-          <ListItemButton
-            onClick={() => {
-              navigate("/create");
-            }}
-          >
-            <ListItemIcon>
-              <Create />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          sx={{
-            bgcolor:
-              currentLocation.pathname === "/profile"
-                ? theme.palette.abood.second
-                : null,
-          }}
-          disablePadding
-        >
-          <ListItemButton
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            <ListItemIcon>
-              <AccountCircleSharpIcon />
-            </ListItemIcon>
-            <ListItemText primary="Profile" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          sx={{
-            bgcolor:
-              currentLocation.pathname === "/setting"
-                ? theme.palette.abood.second
-                : null,
-          }}
-          disablePadding
-        >
-          <ListItemButton
-            onClick={() => {
-              navigate("/setting");
-            }}
-          >
-            <ListItemIcon>
-              <SettingsApplicationsSharpIcon />
-            </ListItemIcon>
-            <ListItemText primary="Setting" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem
-          sx={{
-            bgcolor:
-              currentLocation.pathname === "/logout"
-                ? theme.palette.abood.second
-                : null,
-          }}
-          disablePadding
-        >
-          <ListItemButton
-            onClick={() => {
-              navigate("/logout");
-            }}
-          >
-            <ListItemIcon>
-              <LogoutSharpIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Drawer>
+            <ListItemButton
+              onClick={() => {
+                navigate("/logout");
+              }}
+            >
+              <ListItemIcon>
+                <LogoutSharpIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Drawer>
+    </Box>
   );
 };
 export default Drawerr;
